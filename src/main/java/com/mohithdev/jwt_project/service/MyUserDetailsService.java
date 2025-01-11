@@ -1,6 +1,7 @@
 package com.mohithdev.jwt_project.service;
 
 import com.mohithdev.jwt_project.dao.UsersRepo;
+import com.mohithdev.jwt_project.model.UserPrincipal;
 import com.mohithdev.jwt_project.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,7 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username : " + username);
         }
         Users user = userOpt.get();
-
-
-        return ;
+        
+        return new UserPrincipal(user);
     }
 }
