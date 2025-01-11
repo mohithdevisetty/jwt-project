@@ -1,42 +1,52 @@
 package com.mohithdev.jwt_project.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-//        Customizer<CsrfConfigurer<HttpSecurity>> custCsrf = new Customizer<CsrfConfigurer<HttpSecurity>>() {
-//            @Override
-//            public void customize(CsrfConfigurer<HttpSecurity> configurer) {
-//                configurer.disable();
-//            }
-//        };
-//
-//        http.csrf(custCsrf);
-//
-//        Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> custhttp = new Customizer<AuthorizeHttpRequestsConfigurer<org.springframework.security.config.annotation.web.builders.HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>() {
-//            @Override
-//            public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-//                registry.anyRequest().authenticated();
-//            }
-//        };
-//
-//        http.authorizeHttpRequests(custhttp);
+        /*Customizer<CsrfConfigurer<HttpSecurity>> custCsrf = new Customizer<CsrfConfigurer<HttpSecurity>>() {
+            @Override
+            public void customize(CsrfConfigurer<HttpSecurity> configurer) {
+                configurer.disable();
+            }
+        };
 
+        http.csrf(custCsrf);
+
+        Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> custhttp = new Customizer<AuthorizeHttpRequestsConfigurer<org.springframework.security.config.annotation.web.builders.HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>() {
+            @Override
+            public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
+                registry.anyRequest().authenticated();
+            }
+        };
+
+        http.authorizeHttpRequests(custhttp);*/
 
         http.csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
@@ -46,7 +56,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+    /*@Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User
                 .withDefaultPasswordEncoder()
@@ -63,5 +73,5 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(user, admin);
-    }
+    }*/
 }
