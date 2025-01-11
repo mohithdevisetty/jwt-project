@@ -1,6 +1,6 @@
 package com.mohithdev.jwt_project.service;
 
-import com.mohithdev.jwt_project.dao.UsersRepo;
+import com.mohithdev.jwt_project.dao.UserRepo;
 import com.mohithdev.jwt_project.model.UserPrincipal;
 import com.mohithdev.jwt_project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +14,12 @@ import java.util.Optional;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     @Autowired
-    private UsersRepo usersRepo;
+    private UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<User> userOpt = usersRepo.findByUserName(username);
+        Optional<User> userOpt = userRepo.findByUserName(username);
         if (userOpt.isEmpty()) {
             throw new UsernameNotFoundException("User not found with username : " + username);
         }
