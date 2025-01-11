@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table
-public class Users {
+@Table(name = "users")
+public class User {
     @Id
     private Integer id;
     @Column(name = "username")
