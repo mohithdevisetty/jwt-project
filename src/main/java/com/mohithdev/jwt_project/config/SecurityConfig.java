@@ -51,7 +51,12 @@ public class SecurityConfig {
         http.authorizeHttpRequests(custhttp);*/
 
         http.csrf(customizer -> customizer.disable())
-                .authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
+                .authorizeHttpRequests(customizer ->
+                        customizer
+                                .requestMatchers("register")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
