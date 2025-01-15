@@ -1,6 +1,7 @@
 package com.mohithdev.jwt_project.controller;
 
 import com.mohithdev.jwt_project.model.User;
+import com.mohithdev.jwt_project.service.JwtService;
 import com.mohithdev.jwt_project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private JwtService jwtService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("register")
@@ -29,7 +33,7 @@ public class UserController {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
         if (authentication.isAuthenticated())
-            return "Success";
+            return jwtService.generateToken(user.getUserName());
         else
             return "Login Failed";
     }
